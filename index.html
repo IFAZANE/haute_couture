@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salon de Couture - Vitrine</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #fff; color: #333; line-height: 1.5; overflow-x: hidden; }
+
+    /* --- Navigation --- */
+    header { position: fixed; width: 100%; background: rgba(0,0,0,0.8); color: #fff; z-index: 1000; top: 0; left: 0; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+    .logo { font-size: 1.8rem; font-weight: bold; }
+    .nav-links { display: flex; list-style: none; gap: 20px; }
+    .nav-links a { color: #fff; text-decoration: none; transition: color 0.3s ease; }
+    .nav-links a:hover { color: #ff4081; }
+    .burger { display: none; font-size: 2rem; cursor: pointer; }
+    @media(max-width:768px) {
+      .burger { display: block; }
+      .nav-links { position: absolute; right: 0; top: 60px; flex-direction: column; background: rgba(0,0,0,0.9); width: 200px; padding: 10px; display: none; }
+      .nav-links.active { display: flex; }
+    }
+
+    /* --- Hero / Carrousel --- */
+   .hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 0 20px;
+  background-size: cover;      /* Remplit correctement */
+  background-position: center; /* Centrage */
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  will-change: background-image; /* Optimisation */
+}
+
+    .hero::before { content: ""; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3); pointer-events:none; }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-text h1 { font-size: 3rem; animation: pulse 3s infinite; }
+    .hero-text p { margin: 10px 0; }
+    .btn { background: #ff4081; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; transition: transform 0.3s ease, background 0.3s ease; }
+    .btn:hover { background: #e73370; transform: scale(1.1); }
+
+    /* --- Sections --- */
+    section { padding: 100px 20px; text-align: center; }
+
+    .models .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+    .gallery img { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.5s ease; animation: floating 4s ease-in-out infinite; }
+    .gallery img:hover { transform: scale(1.05) rotate(2deg); }
+
+    .service-cards { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .card { background: #f9f9f9; padding: 20px; border-radius: 10px; width: 250px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+    .card:hover { transform: translateY(-10px); }
+
+    form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto; }
+    form input, form textarea { padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    form button { background: #ff4081; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; transition: background 0.3s ease; }
+    form button:hover { background: #e73370; }
+
+    .map-container { margin-top: 20px; width: 100%; max-width: 600px; height: 400px; margin-left: auto; margin-right: auto; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+    footer { background: #111; color: #fff; padding: 20px; text-align: center; }
+
+    /* --- Animations au scroll --- */
+    .animate { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+    .animate.show { opacity: 1; transform: translateY(0); }
+
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  
+  
+    .gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Remplit la carte sans déformer */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.5s ease;
+  animation: floating 4s ease-in-out infinite;
+}
+
+.models .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  height: auto; /* s'ajuste selon le contenu */
+}
+
+.gallery img.animate {
+  display: block;
+}
+
+/* Logo agrandi, mais ne change pas la hauteur du header */
+.logo {
+  display: flex;
+  align-items: center;
+  height: 60px; /* hauteur du header fixe */
+  overflow: visible; /* permet au logo de dépasser si nécessaire */
+}
+
+.logo img {
+  height: 120px; /* logo plus grand que le header */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Réduction du logo sur petits écrans */
+@media (max-width: 768px) {
+  .logo img {
+    height: 60px; /* s'ajuste pour les écrans mobiles */
+  }
+
+  .navbar {
+    padding: 10px 15px;
+  }
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+  <img src="images/logo_couture.png" alt="Logo Atelier Chic">
+</div>
+
+      <ul class="nav-links">
+        <li><a href="#home">Accueil</a></li>
+        <li><a href="#models">Nos modèles</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="burger">&#9776;</div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero animate">
+    <div class="hero-text">
+      <h1>Coutures Femmes, Enfants & Hommes (+228) 92 50 57 00</h1>
+     
+      <a href="#models" class="btn">Voir nos modèles</a>
+    </div>
+  </section>
+
+  <!-- Models Section -->
+  <section id="models" class="models animate">
+    <h2>Nos modèles</h2>
+    <div class="gallery">
+      <img src="images/model1.webp" alt="Modèle 1" class="animate">
+      <img src="images/model2.webp" alt="Modèle 2" class="animate">
+      <img src="images/model3.webp" alt="Modèle 3" class="animate">
+      <img src="images/model5.webp" alt="Modèle 4" class="animate">
+
+      <img src="images/model6.webp" alt="Modèle 1" class="animate">
+      <img src="images/model7.webp" alt="Modèle 2" class="animate">
+      <!-- <img src="images/model8.webp" alt="Modèle 3" class="animate"> -->
+      <img src="images/model9.webp" alt="Modèle 4" class="animate">
+
+      <img src="images/model10.webp" alt="Modèle 2" class="animate">
+      <img src="images/model11.webp" alt="Modèle 3" class="animate">
+      <img src="images/model12.webp" alt="Modèle 4" class="animate">
+    </div>
+  </section>
+
+ <!-- About Section -->
+<section id="about" class="about animate" style="background: #f9f4f0; border-radius: 15px; padding: 80px 20px; margin: 50px auto; max-width: 1000px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+  <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: #333;">À propos de nous</h2>
+  <p style="margin-bottom: 20px; font-size: 1.1rem;">
+    Chez <strong>et_g_créa_couture</strong>, chaque client est unique et mérite une attention particulière. 
+    Nous proposons des services de couture sur-mesure qui respectent votre style, vos goûts et vos envies. 
+    De la conception à la finition, notre équipe d’experts vous accompagne à chaque étape pour créer des vêtements qui vous ressemblent, avec soin et précision.
+  </p>
+  <p style="margin-bottom: 20px; font-size: 1.1rem;">
+    Notre atelier allie savoir-faire traditionnel et innovation contemporaine. Nous sélectionnons les meilleurs tissus et matériaux pour garantir confort et élégance. 
+    Chaque pièce est conçue avec passion, dans le respect des tendances actuelles tout en valorisant votre personnalité.
+  </p>
+  <p style="font-size: 1.1rem;">
+    En plus de nos services de couture, nous offrons également des conseils personnalisés en stylisme et en choix de matières. 
+    Notre objectif est simple : faire de votre expérience avec nous un moment unique, et vous permettre de porter des créations qui reflètent pleinement votre identité.
+  </p>
+</section>
+
+
+  <!-- Services Section -->
+  <section id="services" class="services animate">
+    <h2>Nos Services</h2>
+    <div class="service-cards">
+      <div class="card animate">
+        <h3>Couture sur mesure</h3>
+        <p>Des créations uniques adaptées à votre style.</p>
+      </div>
+      <div class="card animate">
+        <h3>Retouches</h3>
+        <p>Des ajustements parfaits pour un tombé impeccable.</p>
+      </div>
+      <div class="card animate">
+        <h3>Conseils stylisme</h3>
+        <p>Un accompagnement personnalisé pour sublimer votre look.</p>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact animate">
+    <h2>Contactez-nous</h2>
+    <p>Tél : (+228) 92 50 57 00</p><br>
+    <form class="animate">
+      <input type="text" placeholder="Nom" required>
+      <input type="email" placeholder="Email" required>
+      <textarea placeholder="Votre message" required></textarea>
+      <button type="submit" class="btn">Envoyer</button>
+    </form>
+    <!-- <div class="map-container animate">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3979.9045695910247!2d1.233321214414361!3d6.131106695519027!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1020e2fa7e8e4c7b%3A0x4bdbd1d1b4b5c!2sLom%C3%A9%2C%20Togo!5e0!3m2!1sfr!2s!4v1692867363854!5m2!1sfr!2s"
+        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div> -->
+  </section>
+
+  <!-- Footer -->
+  <footer class="animate">
+    <p>&copy; 2025 Atelier Chic. Tous droits réservés.</p>
+    <div class="socials">
+     <a href="https://www.tiktok.com/@etgcreacouture?_t=ZN-8z8DMwe3R6E&_r=1">TikTok</a>
+      <a href="#">Facebook</a> | 
+      
+    </div>
+  </footer>
+
+  <script>
+    // Menu burger
+    const burger = document.querySelector('.burger');
+    const navLinks = document.querySelector('.nav-links');
+    burger.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+    // Animation au scroll
+    const animatedItems = document.querySelectorAll('.animate');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    animatedItems.forEach(item => observer.observe(item));
+
+    // Carrousel de fond Hero
+    
+    // const hero = document.querySelector('.hero');
+    // const backgrounds = [
+    //   'https://images.unsplash.com/photo-1602920000400-9328b00a187b',
+    //   'https://picsum.photos/1600/900?random=5',
+    //   'https://picsum.photos/1600/900?random=6',
+    //   'https://picsum.photos/1600/900?random=7'
+    // ];
+    // let current = 0;
+    // setInterval(() => {
+    //   current = (current + 1) % backgrounds.length;
+    //   hero.style.backgroundImage = `url(${backgrounds[current]})`;
+    // }, 5000);
+
+const hero = document.querySelector('.hero');
+const backgrounds = [
+  'images/atelier15.webp',
+  'images/atelier3.webp',
+  'images/atelier2.webp',
+  'images/atelier1.webp'
+];
+
+// Précharger
+backgrounds.forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
+
+let current = 0;
+setInterval(() => {
+  current = (current + 1) % backgrounds.length;
+  hero.style.backgroundImage = `url(${backgrounds[current]})`;
+}, 5000);
+
+
+  </script>
+</body>
+</html>
